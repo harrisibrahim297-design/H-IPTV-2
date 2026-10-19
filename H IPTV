@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <title>H IPTV</title>
+  <style>
+    body {
+      margin: 0;
+      background: #080808;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    header {
+      padding: 24px;
+      border-bottom: 1px solid #c9a448;
+      color: #e0bd62;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    main { padding: 30px 18px; }
+    h1 { color: #e0bd62; }
+    .channel {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 16px;
+      background: #191919;
+      color: white;
+      border: 1px solid #c9a448;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    video { width: 100%; margin-top: 20px; }
+    p { color: #bbb; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <header>H IPTV</header>
+  <main>
+    <h1>Welcome to H IPTV</h1>
+    <p>Your home for authorised live TV and streaming.</p>
+    <h2>Live TV Channels</h2>
+    <button class="channel" onclick="chooseChannel('Channel 1')">Channel 1</button>
+    <button class="channel" onclick="chooseChannel('Channel 2')">Channel 2</button>
+    <video id="player" controls playsinline></video>
+    <p id="message">Add your authorised stream URLs to enable playback.</p>
+  </main>
+  <script>
+    function chooseChannel(name) {
+      document.getElementById('message').textContent =
+        name + ': add your licensed HTTPS stream URL to enable playback.';
+    }
+  </script>
+</body>
+</html>
