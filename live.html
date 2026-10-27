@@ -3,198 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>H Sports — Live</title>
+  <title>H SPORTS — Premium Guide</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { background: #000; color: #fff; min-height: 100vh; }
+    body { background: #0b0b0f; color: #fff; min-height: 100vh; }
     
-    /* Password Screen */
-    #password-screen {
-      position: fixed;
-      top: 0; left: 0;
+    /* Payment & Access Screen */
+    #access-screen {
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
       background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       z-index: 9999;
+      overflow-y: auto; padding: 20px;
     }
-    .password-box {
-      background: #1a1a1a;
-      padding: 30px 25px;
-      border-radius: 8px;
-      text-align: center;
-      width: 90%;
-      max-width: 350px;
-      border: 1px solid #333;
+    .access-box {
+      background: #15151f; padding: 30px 24px; border-radius: 12px;
+      border: 1px solid #2a2a3a; text-align: center; width: 100%; max-width: 380px;
     }
-    .password-box h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
-    .password-box p { font-size: 13px; color: #888; margin-bottom: 20px; }
-    .password-box input {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      background: #222;
-      border: 1px solid #444;
-      color: #fff;
-      border-radius: 4px;
-      margin-bottom: 15px;
-      text-align: center;
+    .access-box h1 { font-size: 24px; color: #00ccff; margin-bottom: 8px; }
+    .access-box .tagline { font-size: 14px; color: #888; margin-bottom: 20px; }
+    .price-tag { font-size: 32px; font-weight: bold; color: #00ff88; margin-bottom: 6px; }
+    .price-desc { font-size: 13px; color: #777; margin-bottom: 20px; }
+    
+    .features { text-align: left; margin-bottom: 22px; }
+    .features h3 { font-size: 14px; color: #00ccff; margin-bottom: 10px; }
+    .features p { font-size: 13px; color: #bbb; padding: 6px 0; border-bottom: 1px solid #222; }
+    .features p:last-child { border-bottom: none; }
+    
+    .paypal-btn {
+      display: block; width: 100%; padding: 14px;
+      background: #0070ba; color: white; border: none;
+      border-radius: 6px; font-size: 16px; font-weight: bold;
+      cursor: pointer; text-decoration: none; margin-bottom: 15px;
     }
-    .password-box button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
+    .paypal-btn:hover { background: #005ea6; }
+    
+    .divider { display: flex; align-items: center; gap: 10px; margin: 15px 0; }
+    .divider span { flex: 1; height: 1px; background: #333; }
+    .divider small { color: #666; font-size: 12px; }
+    
+    .pass-area { margin-top: 10px; }
+    .pass-area input {
+      width: 100%; padding: 12px; font-size: 15px;
+      background: #1e1e2f; border: 1px solid #333355;
+      color: #fff; border-radius: 6px; margin-bottom: 10px; text-align: center;
+    }
+    .pass-area button {
+      width: 100%; padding: 11px; font-size: 15px;
+      background: linear-gradient(90deg, #0066ff, #00ccff);
+      color: white; border: none; border-radius: 6px; font-weight: bold;
       cursor: pointer;
     }
-    .error-msg {
-      color: #ff6666;
-      font-size: 13px;
-      margin-top: 12px;
-      display: none;
-    }
+    .err { color: #ff5555; font-size: 13px; margin-top: 10px; display: none; }
+    .small-note { font-size: 10px; color: #444; margin-top: 15px; line-height: 1.5; }
     
-    /* Main Content (hidden until password correct) */
+    /* Main Content — Members Area */
     #main-content { display: none; }
     
-    .sport-tabs { background: #000; padding: 10px 8px; display: flex; gap: 6px; border-bottom: 1px solid #222; }
-    .tab { padding: 6px 16px; font-size: 13px; color: #999; background: #1a1a1a; border-radius: 4px; }
-    .tab.active { background: #007bff; color: white; }
+    .top-bar {
+      background: #0f0f1a; padding: 14px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #222244; position: sticky; top: 0;
+    }
+    .logo { font-size: 20px; font-weight: bold; color: #00ccff; }
+    .logout-btn { color: #ff6666; font-size: 14px; text-decoration: none; }
     
-    .section-title { background: #1a1a1a; padding: 10px 15px; font-size: 14px; font-weight: bold; color: #00cc88; border-bottom: 1px solid #222; }
+    .container { padding: 15px; max-width: 500px; margin: 0 auto; }
+    .welcome { text-align: center; padding: 20px 0; }
+    .welcome h2 { font-size: 20px; color: #00ccff; margin-bottom: 5px; }
+    .welcome p { font-size: 13px; color: #777; }
     
-    .match-top { background: #111; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
-    .team-side { text-align: center; flex: 1; }
-    .team-icon { font-size: 28px; margin-bottom: 4px; }
-    .team-name { font-size: 13px; color: #ddd; }
-    .match-time { text-align: center; font-size: 12px; color: #888; }
-    .live-indicator { color: #e53935; font-size: 11px; font-weight: bold; margin-bottom: 4px; }
-    .upcoming-indicator { color: #007bff; font-size: 11px; font-weight: bold; margin-bottom: 4px; }
-    .fav-icon { font-size: 22px; color: #007bff; }
+    .section { margin-bottom: 25px; }
+    .section-title {
+      font-size: 15px; font-weight: bold; color: #00ff88;
+      margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #222;
+    }
     
-    .player-row { background: #111; text-align: center; padding: 10px; border-bottom: 1px solid #222; }
-    .player-btn { background: #007bff; color: white; border: none; padding: 8px 24px; border-radius: 20px; font-size: 14px; }
+    .card {
+      background: #12121f; border-radius: 8px; padding: 14px;
+      border: 1px solid #222244; margin-bottom: 10px;
+    }
+    .card h4 { font-size: 14px; color: #ddd; margin-bottom: 4px; }
+    .card p { font-size: 12px; color: #888; line-height: 1.5; }
+    .card .live-badge { display: inline-block; background: #cc0000; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; }
+    .card .upcoming-badge { display: inline-block; background: #0066ff; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; }
+    .watch-link { color: #00ccff; font-size: 12px; text-decoration: none; display: inline-block; margin-top: 6px; }
+    .watch-link:hover { text-decoration: underline; }
     
-    .video-area { background: #2a2a2a; height: 180px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #000; }
-    .broadcast-text { font-size: 20px; color: #aaa; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
+    .update-note {
+      background: #1a1a2a; border-left: 3px solid #00ccff;
+      padding: 12px; border-radius: 4px; margin-bottom: 15px;
+    }
+    .update-note p { font-size: 12px; color: #aaa; }
     
-    .divider { display: flex; justify-content: space-around; padding: 8px 0; background: #111; border-bottom: 1px solid #222; }
-    .divider span { width: 40px; height: 2px; background: #333; }
-    
-    .stream-option { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px; border-bottom: 1px solid #222; background: #111; }
-    .stream-info { display: flex; flex-direction: column; }
-    .stream-name { font-size: 14px; color: #eee; }
-    .stream-source { font-size: 12px; color: #666; margin-top: 2px; }
-    .watch-btn { background: #007bff; color: white; border: none; padding: 6px 14px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-block; }
-    
-    .back-link { display: block; text-align: center; padding: 20px; color: #00cc88; text-decoration: none; font-size: 14px; border-top: 1px solid #222; margin-top: 10px; }
+    .back-link { display: block; text-align: center; padding: 20px; color: #00ccff; text-decoration: none; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <!-- Password Screen -->
-  <div id="password-screen">
-    <div class="password-box">
-      <h2>🔒 Enter Password</h2>
-      <p>Please enter the password to access H Sports Live</p>
-      <input type="password" id="password-input" placeholder="Enter password">
-      <button onclick="checkPassword()">Unlock Access</button>
-      <div class="error-msg" id="wrong-pass">❌ Incorrect password — try again</div>
+<!-- 💰 PAYMENT & ACCESS SCREEN -->
+<div id="access-screen">
+  <div class="access-box">
+    <h1>🏆 H SPORTS</h1>
+    <p class="tagline">Your Daily Sports Guide — Premium Access</p>
+    <div class="price-tag">£25.00</div>
+    <p class="price-desc">One-time payment — Lifetime updates</p>
+    
+    <div class="features">
+      <h3>✅ What You Get:</h3>
+      <p>⚽ Daily Match Schedules & Kick-off Times</p>
+      <p>🥊 Boxing Fight Cards & Undercard Info</p>
+      <p>📺 Official Where-to-Watch Links</p>
+      <p>📊 Live Scores & Match Updates</p>
+      <p>📱 Early Access to H Promotions Events</p>
     </div>
+    
+    <!-- 🛑 IMPORTANT: Replace this link with YOUR PayPal link! -->
+    <a href="#" class="paypal-btn" onclick="alert('👉 Replace # in the code with YOUR PayPal payment link first!'); return false;">
+      💳 Pay £25 via PayPal
+    </a>
+    
+    <div class="divider"><span></span><small>OR</small><span></span></div>
+    
+    <div class="pass-area">
+      <input type="text" id="pass-input" placeholder="Enter your access code">
+      <button onclick="checkAccess()">🔓 UNLOCK ACCESS</button>
+      <div class="err" id="wrong-msg">❌ Invalid code — message H SPORTS</div>
+    </div>
+    
+    <p class="small-note">
+      By purchasing, you gain access to our curated sports guide and information service only.<br>
+      No video streams are sold — links point to official broadcasters.
+    </p>
+  </div>
+</div>
+
+<!-- 📺 PREMIUM MEMBER AREA -->
+<div id="main-content">
+
+  <div class="top-bar">
+    <span></span>
+    <span class="logo">🏆 H SPORTS</span>
+    <a href="#" class="logout-btn" onclick="logout()">✕ Logout</a>
   </div>
 
-  <!-- Main Content (Locked Until Password Correct) -->
-  <div id="main-content">
+  <div class="container">
+    <div class="welcome">
+      <h2>👋 Welcome, Member!</h2>
+      <p>Last updated: 27 Oct 2026 • 14:56 UK Time</p>
+    </div>
+    
+    <div class="update-note">
+      <p>📢 <strong>Daily Update:</strong> Check back daily — new matches, kick-off times, and watch links added every morning!</p>
+    </div>
 
-  <!-- Sport Tabs -->
-  <div class="sport-tabs">
-    <div class="tab active">⚽ FOOTBALL</div>
-    <div class="tab">🥊 BOXING</div>
+    <!-- ⚽ FOOTBALL SECTION -->
+    <div class="section">
+      <div class="section-title">⚽ FOOTBALL — TODAY'S GUIDE</div>
+      
+      <div class="card">
+        <span class="live-badge">LIVE NOW</span>
+        <h4>Fleetwood vs Arsenal</h4>
+        <p>Kick-off: 19:45 UK • League Cup</p>
+        <a href="https://www.skysports.com/watch" target="_blank" class="watch-link">📺 Official: Sky Sports →</a>
+      </div>
+      
+      <div class="card">
+        <span class="upcoming-badge">UPCOMING</span>
+        <h4>Man Utd vs Chelsea</h4>
+        <p>Sun 2 Nov • 16:30 GMT • Premier League</p>
+        <a href="https://www.skysports.com/watch" target="_blank" class="watch-link">📺 Official: Sky Sports →</a>
+      </div>
+    </div>
+
+    <!-- 🥊 BOXING SECTION -->
+    <div class="section">
+      <div class="section-title">🥊 BOXING — FIGHT CARD</div>
+      
+      <div class="card">
+        <span class="upcoming-badge">NEXT FIGHT</span>
+        <h4>Canelo vs Mbilli</h4>
+        <p>Sat 31 Oct • 22:00 GMT • Super-Middleweight Title</p>
+        <a href="https://www.dazn.com" target="_blank" class="watch-link">📺 Official: DAZN →</a>
+      </div>
+      
+      <div class="card">
+        <span class="upcoming-badge">TITLE BOUT</span>
+        <h4>Dalton Smith vs Puello</h4>
+        <p>Fri 28 Nov • 19:00 GMT • Bolton, UK — H Promotions</p>
+        <a href="https://www.channel5.com" target="_blank" class="watch-link">📺 Official: Channel 5 →</a>
+      </div>
+    </div>
+
+    <!-- 📊 SCORES & UPDATES -->
+    <div class="section">
+      <div class="section-title">📊 LIVE SCORES & UPDATES</div>
+      
+      <div class="card">
+        <h4>📌 Quick Links</h4>
+        <p>• Live Scores: <a href="https://www.bbc.co.uk/sport/football/scores-fixtures" target="_blank" class="watch-link">BBC Sport →</a></p>
+        <p>• Boxing News: <a href="https://www.skysports.com/boxing" target="_blank" class="watch-link">Sky Sports Boxing →</a></p>
+        <p>• H Promotions Updates: <a href="#" class="watch-link">Coming Soon →</a></p>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to Home Page</a>
   </div>
+</div>
 
-  <!-- ⚽ FOOTBALL 1 -->
-  <div class="section-title">⚽ FOOTBALL — LIVE</div>
-  <div class="match-top">
-    <div class="team-side"><div class="team-icon">⚽</div><div class="team-name">Fleetwood</div></div>
-    <div class="match-time"><div class="live-indicator">LIVE</div><div>19:45 UK</div></div>
-    <div class="team-side"><div class="team-icon">⚽</div><div class="team-name">Arsenal</div></div>
-    <div class="fav-icon">📌</div>
-  </div>
-  <div class="player-row"><button class="player-btn">Player 1</button></div>
-  <div class="video-area"><div class="broadcast-text">BROADCASTING</div></div>
-  <div class="divider"><span></span><span></span><span></span></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">Trendy47</div><div class="stream-source">Sky Sports</div></div><a href="https://www.skysports.com/watch" target="_blank" class="watch-btn">▶ Watch</a></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">GOALIETREND</div><div class="stream-source">BBC iPlayer</div></div><a href="https://www.bbc.co.uk/iplayer" target="_blank" class="watch-btn">▶ Watch</a></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">Sportsbest</div><div class="stream-source">ITVX</div></div><a href="https://www.itv.com" target="_blank" class="watch-btn">▶ Watch</a></div>
+<script>
+// Change this to your own access code
+const ACCESS_CODE = 'Hsports25';
 
-  <!-- ⚽ FOOTBALL 2 -->
-  <div class="section-title">⚽ FOOTBALL — UPCOMING</div>
-  <div class="match-top">
-    <div class="team-side"><div class="team-icon">⚽</div><div class="team-name">Man Utd</div></div>
-    <div class="match-time"><div class="upcoming-indicator">UPCOMING</div><div>Sun 2 Nov • 16:30</div></div>
-    <div class="team-side"><div class="team-icon">⚽</div><div class="team-name">Chelsea</div></div>
-    <div class="fav-icon">📌</div>
-  </div>
-  <div class="player-row"><button class="player-btn">Player 1</button></div>
-  <div class="video-area"><div class="broadcast-text">BROADCASTING</div></div>
-  <div class="divider"><span></span><span></span><span></span></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">FootyStream</div><div class="stream-source">Sky Sports</div></div><a href="https://www.skysports.com/watch" target="_blank" class="watch-btn">▶ Watch</a></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">MatchDay Live</div><div class="stream-source">ITVX</div></div><a href="https://www.itv.com" target="_blank" class="watch-btn">▶ Watch</a></div>
+function checkAccess() {
+  const input = document.getElementById('pass-input').value.trim();
+  if (input === ACCESS_CODE) {
+    document.getElementById('access-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  } else {
+    document.getElementById('wrong-msg').style.display = 'block';
+  }
+}
 
-  <!-- 🥊 BOXING 1 -->
-  <div class="section-title">🥊 BOXING — UPCOMING</div>
-  <div class="match-top">
-    <div class="team-side"><div class="team-icon">🥊</div><div class="team-name">Canelo</div></div>
-    <div class="match-time"><div class="upcoming-indicator">UPCOMING</div><div>Sat 31 Oct • 22:00</div></div>
-    <div class="team-side"><div class="team-icon">🥊</div><div class="team-name">Mbilli</div></div>
-    <div class="fav-icon">📌</div>
-  </div>
-  <div class="player-row"><button class="player-btn">Player 1</button></div>
-  <div class="video-area"><div class="broadcast-text">BROADCASTING</div></div>
-  <div class="divider"><span></span><span></span><span></span></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">BoxStreamHD</div><div class="stream-source">DAZN</div></div><a href="https://www.dazn.com" target="_blank" class="watch-btn">▶ Watch</a></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">FightNight Live</div><div class="stream-source">Channel 5</div></div><a href="https://www.channel5.com" target="_blank" class="watch-btn">▶ Watch</a></div>
+function logout() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('access-screen').style.display = 'flex';
+  document.getElementById('pass-input').value = '';
+  document.getElementById('wrong-msg').style.display = 'none';
+}
 
-  <!-- 🥊 BOXING 2 -->
-  <div class="section-title">🥊 BOXING — TITLE BOUT</div>
-  <div class="match-top">
-    <div class="team-side"><div class="team-icon">🥊</div><div class="team-name">Dalton Smith</div></div>
-    <div class="match-time"><div class="upcoming-indicator">UPCOMING</div><div>Fri 28 Nov • 19:00</div></div>
-    <div class="team-side"><div class="team-icon">🥊</div><div class="team-name">Puello</div></div>
-    <div class="fav-icon">📌</div>
-  </div>
-  <div class="player-row"><button class="player-btn">Player 1</button></div>
-  <div class="video-area"><div class="broadcast-text">BROADCASTING</div></div>
-  <div class="divider"><span></span><span></span><span></span></div>
-  <div class="stream-option"><div class="stream-info"><div class="stream-name">ProBox TV</div><div class="stream-source">DAZN</div></div><a href="https://www.dazn.com" target="_blank" class="watch-btn">▶ Watch</a></div>
-
-  <a href="index.html" class="back-link">← Back to Home</a>
-
-  </div>
-
-  <!-- Password Check Script -->
-  <script>
-    function checkPassword() {
-      const input = document.getElementById('password-input').value;
-      const correctPass = 'H sport1232';
-      if (input === correctPass) {
-        document.getElementById('password-screen').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-      } else {
-        document.getElementById('wrong-pass').style.display = 'block';
-      }
-    }
-    // Allow Enter key to submit
-    document.getElementById('password-input').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') checkPassword();
-    });
-  </script>
+document.getElementById('pass-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') checkAccess();
+});
+</script>
 
 </body>
 </html>
+
 
 
