@@ -272,7 +272,46 @@ document.getElementById('pass-input').addEventListener('keypress', function(e) {
 </script>
 
 </body>
-</html>
+</html>const ACCESS_CODE = 'Hsports25';
+
+function showAccess() {
+  document.getElementById('access-screen').style.display = 'flex';
+}
+function hideAccess() {
+  document.getElementById('access-screen').style.display = 'none';
+  document.getElementById('wrong-msg').style.display = 'none';
+  document.getElementById('pass-input').value = '';
+}
+function checkAccess() {
+  const input = document.getElementById('pass-input').value.trim();
+  if (input === ACCESS_CODE) {
+    document.getElementById('access-screen').style.display = 'none';
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  } else {
+    document.getElementById('wrong-msg').style.display = 'block';
+  }
+}
+function logout() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('home-screen').style.display = 'block';
+  document.getElementById('pass-input').value = '';
+  document.getElementById('wrong-msg').style.display = 'none';
+}
+document.getElementById('pass-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') checkAccess();
+});
+
+function updateUKTime() {
+  const now = new Date();
+  const ukOptions = { timeZone: 'Europe/London', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+  const ukTime = now.toLocaleString('en-GB', ukOptions);
+  const el = document.getElementById('uk-datetime');
+  if (el) el.textContent = ukTime + ' UK Time';
+}
+updateUKTime();
+setInterval(updateUKTime, 60000);
+
 
 
 
