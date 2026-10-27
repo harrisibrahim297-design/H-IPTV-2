@@ -3,239 +3,263 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>H SPORTS Live</title>
+  <title>H SPORTS — Premium Guide</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
     body { background: #0b0b0f; color: #fff; min-height: 100vh; }
     
-    /* Password Screen */
-    #passscreen {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #000;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999;
+    /* === HOME SCREEN === */
+    #home-screen { display: block; }
+    
+    .header { text-align: center; padding: 50px 20px 30px; }
+    .logo { font-size: 42px; font-weight: bold; color: #00ccff; margin-bottom: 10px; }
+    .tagline { font-size: 16px; color: #888; line-height: 1.5; }
+    
+    .container { padding: 20px; max-width: 500px; margin: 0 auto; }
+    
+    .enter-btn {
+      display: block; text-align: center;
+      background: linear-gradient(90deg, #0066ff, #00ccff);
+      color: white; font-size: 20px; font-weight: bold;
+      padding: 22px; border-radius: 10px;
+      text-decoration: none; margin-bottom: 25px; border: none;
+      cursor: pointer; width: 100%;
     }
-    .passbox {
-      background: #15151f; padding: 32px 24px; border-radius: 10px;
-      border: 1px solid #2a2a3a; text-align: center; width: 90%; max-width: 360px;
+    .enter-btn:hover { opacity: 0.95; }
+    
+    .price-box {
+      background: linear-gradient(135deg, #002244, #001a33);
+      border: 1px solid #00ccff; text-align: center;
+      padding: 25px; border-radius: 10px; margin-bottom: 20px;
     }
-    .passbox h2 { font-size: 20px; margin-bottom: 8px; color: #00ccff; }
-    .passbox p { font-size: 13px; color: #777; margin-bottom: 20px; }
-    .passbox input {
+    .price-box h2 { font-size: 36px; color: #00ff88; margin-bottom: 5px; }
+    .price-box p { font-size: 14px; color: #888; }
+    
+    .card {
+      background: #15151f; border: 1px solid #2a2a3a;
+      border-radius: 8px; padding: 20px; margin-bottom: 15px;
+    }
+    .card h3 { color: #00ff88; margin-bottom: 10px; font-size: 16px; }
+    .card p { font-size: 14px; color: #aaa; line-height: 1.6; }
+    
+    .footer { text-align: center; padding: 30px 20px; font-size: 12px; color: #444; }
+    
+    /* === ACCESS SCREEN === */
+    #access-screen {
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+      align-items: center; justify-content: center;
+      z-index: 9999; padding: 20px; overflow-y: auto;
+    }
+    .access-box {
+      background: #15151f; padding: 30px 24px; border-radius: 12px;
+      border: 1px solid #2a2a3a; text-align: center; width: 100%; max-width: 380px;
+    }
+    .access-box h2 { font-size: 22px; color: #00ccff; margin-bottom: 15px; }
+    .access-box input {
       width: 100%; padding: 12px; font-size: 15px;
       background: #1e1e2f; border: 1px solid #333355;
       color: #fff; border-radius: 6px; margin-bottom: 12px; text-align: center;
     }
-    .passbox button {
+    .access-box button {
       width: 100%; padding: 12px; font-size: 15px;
       background: linear-gradient(90deg, #0066ff, #00ccff);
       color: white; border: none; border-radius: 6px; font-weight: bold;
-      cursor: pointer;
+      cursor: pointer; margin-bottom: 10px;
     }
+    .access-box .back-btn { background: #333; }
     .err { color: #ff5555; font-size: 13px; margin-top: 10px; display: none; }
     
-    #main { display: none; }
+    /* === MEMBER AREA === */
+    #main-content { display: none; }
     
-    /* Top Bar */
-    .topbar {
-      background: #0f0f1a; padding: 12px 16px;
+    .top-bar {
+      background: #0f0f1a; padding: 14px 16px;
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #222244;
+      border-bottom: 1px solid #222244; position: sticky; top: 0;
     }
-    .logo { font-size: 20px; font-weight: bold; color: #00ccff; }
-    .top-icons { display: flex; gap: 14px; font-size: 17px; color: #888; }
+    .logo-small { font-size: 18px; font-weight: bold; color: #00ccff; }
+    .logout-btn { color: #ff6666; font-size: 14px; text-decoration: none; cursor: pointer; }
     
-    /* Sport Tabs */
-    .sport-tabs {
-      background: #111122; padding: 10px 12px;
-      display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid #222244;
-    }
-    .sport-tab {
-      padding: 7px 14px; font-size: 13px; color: #778; white-space: nowrap;
-      border-radius: 4px;
-    }
-    .sport-tab.active { background: #0066ff; color: #fff; }
+    .welcome { text-align: center; padding: 20px 0; }
+    .welcome h2 { font-size: 20px; color: #00ccff; margin-bottom: 5px; }
+    .welcome p { font-size: 13px; color: #777; }
     
-    /* Match Card */
+    .update-note {
+      background: #1a1a2a; border-left: 3px solid #00ccff;
+      padding: 12px; border-radius: 4px; margin-bottom: 15px;
+    }
+    .update-note p { font-size: 12px; color: #aaa; }
+    
+    .section { margin-bottom: 25px; }
+    .section-title {
+      font-size: 15px; font-weight: bold; color: #00ff88;
+      margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #222;
+    }
+    
     .match-card {
-      background: #12121f; margin: 10px; border-radius: 8px;
-      border: 1px solid #222244; overflow: hidden;
+      background: #12121f; border-radius: 8px; padding: 14px;
+      border: 1px solid #222244; margin-bottom: 10px;
     }
-    .match-head {
-      padding: 14px; display: flex; justify-content: space-between; align-items: center;
-      background: #181828; border-bottom: 1px solid #222244;
-    }
-    .team-side { text-align: center; flex: 1; }
-    .team-emoji { font-size: 24px; margin-bottom: 3px; }
-    .team-name { font-size: 13px; color: #ccc; }
-    .match-time { text-align: center; font-size: 12px; color: #666; }
-    .live-dot { display: inline-block; width: 8px; height: 8px; background: #ff3333; border-radius: 50%; margin-right: 4px; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%{opacity:1} 50%{opacity:0.4} 100%{opacity:1} }
-    
-    .player-area { padding: 10px; text-align: center; background: #0f0f1a; border-bottom: 1px solid #222244; }
-    .player-btn { background: #0066ff; color: white; border: none; padding: 6px 18px; border-radius: 16px; font-size: 13px; }
-    
-    .stream-placeholder {
-      height: 180px; background: #1a1a2a; display: flex; align-items: center; justify-content: center;
-      border-bottom: 1px solid #222244;
-    }
-    .stream-text { font-size: 16px; color: #666; letter-spacing: 2px; text-transform: uppercase; }
-    
-    .dividers { display: flex; justify-content: center; gap: 24px; padding: 8px; background: #111122; border-bottom: 1px solid #222244; }
-    .div { width: 40px; height: 2px; background: #2a2a4a; }
-    
-    .stream-option {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px; border-bottom: 1px solid #222244;
-    }
-    .stream-info h4 { font-size: 14px; color: #ddd; margin-bottom: 2px; }
-    .stream-info p { font-size: 12px; color: #666; }
-    .watch-link {
-      background: #0066ff; color: white; padding: 6px 14px; border-radius: 4px;
-      text-decoration: none; font-size: 13px; font-weight: bold;
-    }
-    
-    .back-link { display: block; text-align: center; padding: 18px; color: #00ccff; text-decoration: none; font-size: 14px; }
+    .live-badge { display: inline-block; background: #cc0000; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; }
+    .upcoming-badge { display: inline-block; background: #0066ff; color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; }
+    .match-card h4 { font-size: 14px; color: #ddd; margin-bottom: 4px; }
+    .match-card p { font-size: 12px; color: #888; line-height: 1.5; }
+    .watch-link { color: #00ccff; font-size: 12px; text-decoration: none; display: inline-block; margin-top: 6px; }
   </style>
 </head>
 <body>
 
-<!-- Password Lock -->
-<div id="passscreen">
-  <div class="passbox">
-    <h2>🔒 H SPORTS LIVE</h2>
-    <p>Enter password to access streams</p>
-    <input type="password" id="passinput" placeholder="Enter password...">
-    <button onclick="checkPass()">ENTER</button>
-    <div class="err" id="wrong">❌ Incorrect password</div>
+<!-- 🏠 HOME SCREEN -->
+<div id="home-screen">
+  <div class="header">
+    <div class="logo">🏆 H SPORTS</div>
+    <div class="tagline">Your Daily Sports Guide — Match Times • Watch Links • Updates</div>
+  </div>
+
+  <div class="container">
+    <button class="enter-btn" onclick="showAccess()">🔓 ENTER PREMIUM GUIDE</button>
+    
+    <div class="price-box">
+      <h2>£25.00</h2>
+      <p>One-Time Payment — Lifetime Access & Updates</p>
+    </div>
+    
+    <div class="card">
+      <h3>✅ WHAT YOU GET</h3>
+      <p>⚽ Daily Football Schedules & Kick-off Times<br>
+      🥊 Boxing Fight Cards & Undercard Info<br>
+      📺 Official Where-to-Watch Links<br>
+      📊 Live Scores & Match Updates<br>
+      📱 Early Access to H Promotions Events</p>
+    </div>
+    
+    <div class="card">
+      <h3>📩 HOW TO JOIN</h3>
+      <p>1. Message me to pay via PayPal<br>
+      2. Get your access code<br>
+      3. Enter below & unlock instant access</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2026 H SPORTS — Information Service Only.<br>
+    Links point to official broadcasters.
   </div>
 </div>
 
-<!-- Main Content -->
-<div id="main">
+<!-- 🔑 ACCESS SCREEN -->
+<div id="access-screen">
+  <div class="access-box">
+    <h2>🔒 ENTER ACCESS CODE</h2>
+    <input type="text" id="pass-input" placeholder="Type your code here...">
+    <button onclick="checkAccess()">🔓 UNLOCK</button>
+    <button class="back-btn" onclick="hideAccess()">← Back</button>
+    <div class="err" id="wrong-msg">❌ Wrong code — message H SPORTS</div>
+  </div>
+</div>
 
-  <!-- Top Bar -->
-  <div class="topbar">
-    <span>☰</span>
-    <span class="logo">H SPORTS</span>
-    <div class="top-icons">📖 📅</div>
+<!-- 📺 PREMIUM MEMBER AREA -->
+<div id="main-content">
+  <div class="top-bar">
+    <span></span>
+    <span class="logo-small">🏆 H SPORTS</span>
+    <span class="logout-btn" onclick="logout()">✕ Logout</span>
   </div>
 
-  <!-- Sport Tabs -->
-  <div class="sport-tabs">
-    <span class="sport-tab active">FOOTBALL</span>
-    <span class="sport-tab">BOXING</span>
-    <span class="sport-tab">F1</span>
-    <span class="sport-tab">NFL</span>
-    <span class="sport-tab">NBA</span>
-  </div>
+  <div class="container">
+    <div class="welcome">
+      <h2>👋 Welcome, Member!</h2>
+      <p>Last updated: 27 Oct 2026 • 16:54 UK Time</p>
+    </div>
+    
+    <div class="update-note">
+      <p>📢 <strong>Daily Update:</strong> New matches, times, and watch links added daily!</p>
+    </div>
 
-  <!-- ⚽ FOOTBALL MATCH 1 -->
-  <div class="match-card">
-    <div class="match-head">
-      <div class="team-side">
-        <div class="team-emoji">⚽</div>
-        <div class="team-name">Fleetwood</div>
+    <!-- ⚽ FOOTBALL -->
+    <div class="section">
+      <div class="section-title">⚽ FOOTBALL — TODAY'S GUIDE</div>
+      
+      <div class="match-card">
+        <span class="live-badge">LIVE NOW</span>
+        <h4>Fleetwood vs Arsenal</h4>
+        <p>Kick-off: 19:45 UK • League Cup</p>
+        <a href="https://www.skysports.com/watch" target="_blank" class="watch-link">📺 Sky Sports →</a>
       </div>
-      <div class="match-time">
-        <span class="live-dot"></span>LIVE<br>
-        <span>19:45 UK</span>
-      </div>
-      <div class="team-side">
-        <div class="team-emoji">⚽</div>
-        <div class="team-name">Arsenal</div>
+      
+      <div class="match-card">
+        <span class="upcoming-badge">UPCOMING</span>
+        <h4>Man Utd vs Chelsea</h4>
+        <p>Sun 2 Nov • 16:30 GMT • Premier League</p>
+        <a href="https://www.skysports.com/watch" target="_blank" class="watch-link">📺 Sky Sports →</a>
       </div>
     </div>
-    <div class="player-area">
-      <button class="player-btn">Player 1</button>
-    </div>
-    <div class="stream-placeholder">
-      <div class="stream-text">BROADCASTING</div>
-    </div>
-    <div class="dividers"><div class="div"></div><div class="div"></div><div class="div"></div></div>
-    <div class="stream-option">
-      <div class="stream-info">
-        <h4>Trendy47</h4>
-        <p>Sky Sports</p>
-      </div>
-      <a href="https://www.skysports.com/watch" target="_blank" class="watch-link">▶ WATCH</a>
-    </div>
-    <div class="stream-option">
-      <div class="stream-info">
-        <h4>GOALIETREND</h4>
-        <p>BBC iPlayer</p>
-      </div>
-      <a href="https://www.bbc.co.uk/iplayer" target="_blank" class="watch-link">▶ WATCH</a>
-    </div>
-    <div class="stream-option">
-      <div class="stream-info">
-        <h4>Sportsbest</h4>
-        <p>ITVX</p>
-      </div>
-      <a href="https://www.itv.com" target="_blank" class="watch-link">▶ WATCH</a>
-    </div>
-  </div>
 
-  <!-- 🥊 BOXING MATCH 1 -->
-  <div class="match-card">
-    <div class="match-head">
-      <div class="team-side">
-        <div class="team-emoji">🥊</div>
-        <div class="team-name">Canelo</div>
+    <!-- 🥊 BOXING -->
+    <div class="section">
+      <div class="section-title">🥊 BOXING — FIGHT CARD</div>
+      
+      <div class="match-card">
+        <span class="upcoming-badge">NEXT FIGHT</span>
+        <h4>Canelo vs Mbilli</h4>
+        <p>Sat 31 Oct • 22:00 GMT • Super-Middleweight Title</p>
+        <a href="https://www.dazn.com" target="_blank" class="watch-link">📺 DAZN →</a>
       </div>
-      <div class="match-time">
-        UPCOMING<br>
-        <span>Sat 31 Oct • 22:00</span>
-      </div>
-      <div class="team-side">
-        <div class="team-emoji">🥊</div>
-        <div class="team-name">Mbilli</div>
+      
+      <div class="match-card">
+        <span class="upcoming-badge">TITLE BOUT</span>
+        <h4>Dalton Smith vs Puello</h4>
+        <p>Fri 28 Nov • 19:00 GMT • Bolton — H Promotions</p>
+        <a href="https://www.channel5.com" target="_blank" class="watch-link">📺 Channel 5 →</a>
       </div>
     </div>
-    <div class="player-area">
-      <button class="player-btn">Player 1</button>
-    </div>
-    <div class="stream-placeholder">
-      <div class="stream-text">BROADCASTING</div>
-    </div>
-    <div class="dividers"><div class="div"></div><div class="div"></div><div class="div"></div></div>
-    <div class="stream-option">
-      <div class="stream-info">
-        <h4>BoxStreamHD</h4>
-        <p>DAZN</p>
+
+    <!-- 📊 LINKS -->
+    <div class="section">
+      <div class="section-title">📊 QUICK LINKS</div>
+      <div class="match-card">
+        <p>• Live Scores: <a href="https://www.bbc.co.uk/sport/football/scores-fixtures" target="_blank" class="watch-link">BBC Sport →</a></p>
+        <p>• Boxing News: <a href="https://www.skysports.com/boxing" target="_blank" class="watch-link">Sky Sports Boxing →</a></p>
       </div>
-      <a href="https://www.dazn.com" target="_blank" class="watch-link">▶ WATCH</a>
-    </div>
-    <div class="stream-option">
-      <div class="stream-info">
-        <h4>FightNight Live</h4>
-        <p>Channel 5</p>
-      </div>
-      <a href="https://www.channel5.com" target="_blank" class="watch-link">▶ WATCH</a>
     </div>
   </div>
-
-  <a href="index.html" class="back-link">← Back to Home</a>
-
 </div>
 
 <script>
-function checkPass() {
-  const input = document.getElementById('passinput').value;
-  if (input === 'H sport1232') {
-    document.getElementById('passscreen').style.display = 'none';
-    document.getElementById('main').style.display = 'block';
+const ACCESS_CODE = 'Hsports25';
+
+function showAccess() {
+  document.getElementById('access-screen').style.display = 'flex';
+}
+function hideAccess() {
+  document.getElementById('access-screen').style.display = 'none';
+  document.getElementById('wrong-msg').style.display = 'none';
+  document.getElementById('pass-input').value = '';
+}
+function checkAccess() {
+  const input = document.getElementById('pass-input').value.trim();
+  if (input === ACCESS_CODE) {
+    document.getElementById('access-screen').style.display = 'none';
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
   } else {
-    document.getElementById('wrong').style.display = 'block';
+    document.getElementById('wrong-msg').style.display = 'block';
   }
 }
-document.getElementById('passinput').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') checkPass();
+function logout() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('home-screen').style.display = 'block';
+  document.getElementById('pass-input').value = '';
+  document.getElementById('wrong-msg').style.display = 'none';
+}
+document.getElementById('pass-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') checkAccess();
 });
 </script>
 
 </body>
 </html>
+
 
 
