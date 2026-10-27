@@ -1,345 +1,56 @@
-<!DOCTYPE html>
-<html lang="en-GB">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>H SPORTS — Premium Guide</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { background: #000; color: #fff; min-height: 100vh; }
-    
-    #home-screen { display: block; }
-    .header { text-align: center; padding: 40px 20px 20px; background: linear-gradient(180deg, #0a1428, #000); }
-    .logo { font-size: 36px; font-weight: bold; color: #00ccff; margin-bottom: 5px; }
-    .tagline { font-size: 14px; color: #666; margin-bottom: 20px; }
-    
-    .container { padding: 15px; max-width: 520px; margin: 0 auto; }
-    .enter-btn {
-      display: block; text-align: center;
-      background: linear-gradient(90deg, #0066ff, #00ccff);
-      color: white; font-size: 18px; font-weight: bold;
-      padding: 18px; border-radius: 8px; border: none;
-      cursor: pointer; width: 100%; margin-bottom: 20px;
-    }
-    .enter-btn:hover { opacity: 0.95; }
-    
-    .price-box {
-      background: linear-gradient(135deg, #001a33, #002244);
-      border: 1px solid #00ccff; text-align: center;
-      padding: 22px; border-radius: 8px; margin-bottom: 15px;
-    }
-    .price-box h2 { font-size: 32px; color: #00ff88; margin-bottom: 5px; }
-    .price-box p { font-size: 13px; color: #888; }
-    
-    .card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 18px; margin-bottom: 12px; }
-    .card h3 { color: #00ccff; margin-bottom: 10px; font-size: 15px; }
-    .card p { font-size: 13px; color: #aaa; line-height: 1.6; }
-    
-    .footer { text-align: center; padding: 30px 20px; font-size: 11px; color: #444; }
-    
-    #access-screen {
-      display: none; position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%; background: rgba(0,0,0,0.97);
-      align-items: center; justify-content: center;
-      z-index: 9999; padding: 20px;
-    }
-    .access-box {
-      background: #111; padding: 28px 22px; border-radius: 10px;
-      border: 1px solid #333; text-align: center; width: 100%; max-width: 360px;
-    }
-    .access-box h2 { font-size: 20px; color: #00ccff; margin-bottom: 12px; }
-    .access-box input {
-      width: 100%; padding: 12px; font-size: 15px;
-      background: #1a1a2e; border: 1px solid #334;
-      color: #fff; border-radius: 6px; margin-bottom: 12px; text-align: center;
-    }
-    .access-box button {
-      width: 100%; padding: 12px; font-size: 15px;
-      background: linear-gradient(90deg, #0066ff, #00ccff);
-      color: white; border: none; border-radius: 6px; font-weight: bold;
-      cursor: pointer; margin-bottom: 10px;
-    }
-    .access-box .back-btn { background: #2a2a3a; }
-    .err { color: #ff5555; font-size: 13px; margin-top: 10px; display: none; }
-    
-    #main-content { display: none; }
-    .top-bar {
-      background: #0a0a12; padding: 12px 15px;
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #222; position: sticky; top: 0;
-    }
-    .logo-small { font-size: 17px; font-weight: bold; color: #00ccff; }
-    .logout-btn { color: #ff5555; font-size: 13px; cursor: pointer; }
-    
-    .welcome { text-align: center; padding: 15px 0; border-bottom: 1px solid #222; margin-bottom: 15px; }
-    .welcome h2 { font-size: 18px; color: #00ccff; margin-bottom: 4px; }
-    .welcome p { font-size: 12px; color: #666; }
-    
-    .live-badge { display: inline-block; background: #cc0000; color: white; font-size: 10px; padding: 3px 8px; border-radius: 10px; margin-bottom: 6px; font-weight: bold; }
-    .upcoming-badge { display: inline-block; background: #0066ff; color: white; font-size: 10px; padding: 3px 8px; border-radius: 10px; margin-bottom: 6px; font-weight: bold; }
-    
-    .match-header {
-      background: linear-gradient(180deg, #0f1a2f, #000);
-      border-radius: 8px; padding: 16px; text-align: center;
-      margin-bottom: 12px; border: 1px solid #1a2a4a;
-    }
-    .teams { font-size: 16px; font-weight: bold; margin-bottom: 6px; }
-    .vs { color: #00ccff; margin: 0 6px; }
-    .countdown-text { font-size: 12px; color: #888; margin-bottom: 3px; }
-    .countdown-time { font-size: 18px; font-weight: bold; color: #00ff88; }
-    .match-info { font-size: 11px; color: #666; margin-top: 4px; }
-    
-    .player-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-    .player-btn {
-      flex: 1; min-width: 70px; padding: 8px 6px;
-      background: #0055cc; color: white; border: none;
-      border-radius: 5px; font-size: 12px; font-weight: bold;
-      cursor: pointer; text-align: center; text-decoration: none;
-    }
-    .player-btn:hover { background: #0066ee; }
-    
-    .section-title {
-      font-size: 14px; font-weight: bold; color: #00ccff;
-      margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #222;
-    }
-    
-    .stream-row {
-      display: flex; align-items: center; justify-content: space-between;
-      background: #111; border-radius: 5px; padding: 10px 12px;
-      margin-bottom: 6px; border: 1px solid #222;
-    }
-    .stream-name { font-size: 13px; color: #ddd; }
-    .watch-btn {
-      background: #0066ff; color: white; padding: 5px 12px;
-      border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold;
-    }
-    .watch-btn:hover { background: #0077ff; }
-    
-    .divider { height: 1px; background: #222; margin: 15px 0; }
-  </style>
-</head>
-<body>
+<div class="section-title">⚽ FOOTBALL — THIS WEEK</div>
 
-<div id="home-screen">
-  <div class="header">
-    <div class="logo">🏆 H SPORTS</div>
-    <div class="tagline">Your Daily Sports Guide — Match Times • Watch Links • Updates</div>
-  </div>
-
-  <div class="container">
-    <button class="enter-btn" onclick="showAccess()">🔓 ENTER PREMIUM GUIDE</button>
-    
-    <div class="price-box">
-      <h2>£10.00</h2>
-      <p>One-Time Payment — Lifetime Access & Updates</p>
-    </div>
-    
-    <div class="card">
-      <h3>✅ WHAT YOU GET</h3>
-      <p>⚽ Daily Man Utd, Man City & Premier League<br>
-      🥊 Boxing Cards — Fights & Undercard Info<br>
-      📺 Multiple Official Watch Links<br>
-      📊 Live Scores & Kick-off Reminders<br>
-      📱 H Promotions Early Access</p>
-    </div>
-    
-    <div class="card">
-      <h3>📩 HOW TO JOIN</h3>
-      <p>1. Message to pay via PayPal<br>
-      2. Get your access code<br>
-      3. Enter below & unlock instant access</p>
-    </div>
-  </div>
-
-  <div class="footer">
-    © 2026 H SPORTS — Information Service Only.<br>
-    Links point to official broadcasters.
-  </div>
+<div class="match-header">
+  <span class="upcoming-badge">TUE 28 OCT • 19:45</span>
+  <div class="teams">Man City <span class="vs">VS</span> Brighton</div>
+  <div class="match-info">Carabao Cup — Etihad Stadium</div>
+</div>
+<div class="stream-row">
+  <span class="stream-name">Sky Sports Main Event</span>
+  <a href="https://www.skysports.com/watch" target="_blank" class="watch-btn">▶ WATCH</a>
+</div>
+<div class="stream-row">
+  <span class="stream-name">TNT Sports</span>
+  <a href="https://www.tntsports.com" target="_blank" class="watch-btn">▶ WATCH</a>
 </div>
 
-<div id="access-screen">
-  <div class="access-box">
-    <h2>🔒 ENTER ACCESS CODE</h2>
-    <input type="text" id="pass-input" placeholder="Type your code here...">
-    <button onclick="checkAccess()">🔓 UNLOCK</button>
-    <button class="back-btn" onclick="hideAccess()">← Back</button>
-    <div class="err" id="wrong-msg">❌ Wrong code — message H SPORTS</div>
-  </div>
+<div class="match-header" style="margin-top:15px;">
+  <span class="upcoming-badge">SAT 31 OCT • 12:30</span>
+  <div class="teams">Man Utd <span class="vs">VS</span> Chelsea</div>
+  <div class="match-info">Premier League — Old Trafford</div>
+</div>
+<div class="stream-row">
+  <span class="stream-name">Sky Sports Premier League</span>
+  <a href="https://www.skysports.com/watch" target="_blank" class="watch-btn">▶ WATCH</a>
 </div>
 
-<div id="main-content">
-  <div class="top-bar">
-    <span></span>
-    <span class="logo-small">🏆 H SPORTS</span>
-    <span class="logout-btn" onclick="logout()">✕ Logout</span>
-  </div>
-
-  <div class="container">
-    <div class="welcome">
-      <h2>👋 Welcome, Member!</h2>
-      <p>📅 <span id="uk-datetime">Loading...</span></p>
-    </div>
-
-    <div class="section-title">⚽ MAN UTD</div>
-    <div class="match-header">
-      <span class="upcoming-badge">UPCOMING</span>
-      <div class="teams">Man Utd <span class="vs">VS</span> Chelsea</div>
-      <div class="countdown-text">KICK-OFF</div>
-      <div class="countdown-time">Sun 2 Nov • 16:30</div>
-      <div class="match-info">Old Trafford • Premier League</div>
-    </div>
-    <div class="player-buttons">
-      <a href="https://www.skysports.com/watch" target="_blank" class="player-btn">Player 1</a>
-      <a href="https://www.bbc.co.uk/sport" target="_blank" class="player-btn">Player 2</a>
-      <a href="https://www.skysports.com/watch" target="_blank" class="player-btn">Player 3</a>
-      <a href="https://www.itv.com" target="_blank" class="player-btn">Player 4</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">Sky Sports Main Event</span>
-      <a href="https://www.skysports.com/watch" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">BBC Sport</span>
-      <a href="https://www.bbc.co.uk/sport/football" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">ITV Sport</span>
-      <a href="https://www.itv.com" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-
-    <div class="section-title">⚽ MAN CITY</div>
-    <div class="match-header">
-      <span class="upcoming-badge">UPCOMING</span>
-      <div class="teams">Man City <span class="vs">VS</span> Tottenham</div>
-      <div class="countdown-text">KICK-OFF</div>
-      <div class="countdown-time">Sat 1 Nov • 17:30</div>
-      <div class="match-info">Etihad Stadium • Premier League</div>
-    </div>
-    <div class="player-buttons">
-      <a href="https://www.skysports.com/watch" target="_blank" class="player-btn">Player 1</a>
-      <a href="https://www.bbc.co.uk/sport" target="_blank" class="player-btn">Player 2</a>
-      <a href="https://www.dazn.com" target="_blank" class="player-btn">Player 3</a>
-      <a href="https://www.amazon.co.uk/prime/video/sport" target="_blank" class="player-btn">Player 4</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">Sky Sports Premier League</span>
-      <a href="https://www.skysports.com/watch" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">BBC Sport</span>
-      <a href="https://www.bbc.co.uk/sport/football" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">Prime Video Sport</span>
-      <a href="https://www.amazon.co.uk/prime/video/sport" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="section-title">🥊 BOXING — THIS WEEK'S CARDS</div>
-    
-    <div class="match-header">
-      <span class="upcoming-badge">MAIN EVENT</span>
-      <div class="teams">Canelo <span class="vs">VS</span> Mbilli</div>
-      <div class="countdown-text">FIGHT NIGHT</div>
-      <div class="countdown-time">Sat 31 Oct • 02:00 UK</div>
-      <div class="match-info">Las Vegas • Super-Middleweight Title</div>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">DAZN PPV</span>
-      <a href="https://www.dazn.com" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">Undercard — DAZN</span>
-      <a href="https://www.dazn.com" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-
-    <div class="match-header" style="margin-top:15px;">
-      <span class="upcoming-badge">H PROMOTIONS</span>
-      <div class="teams">Dalton Smith <span class="vs">VS</span> Puello</div>
-      <div class="countdown-text">FIGHT NIGHT</div>
-      <div class="countdown-time">Fri 28 Nov • 19:00 UK</div>
-      <div class="match-info">The Hideout Arena, Bolton • Super-Lightweight Title</div>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">Channel 5</span>
-      <a href="https://www.channel5.com" target="_blank" class="watch-btn">▶ WATCH</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">H SPORTS — Live Updates</span>
-      <a href="#" class="watch-btn">▶ INFO</a>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="section-title">📊 SCORES & UPDATES</div>
-    <div class="stream-row">
-      <span class="stream-name">Live Scores & Fixtures</span>
-      <a href="https://www.bbc.co.uk/sport/football/scores-fixtures" target="_blank" class="watch-btn">→</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">Premier League Table</span>
-      <a href="https://www.bbc.co.uk/sport/football/tables" target="_blank" class="watch-btn">→</a>
-    </div>
-    <div class="stream-row">
-      <span class="stream-name">Boxing Rankings & News</span>
-      <a href="https://www.skysports.com/boxing" target="_blank" class="watch-btn">→</a>
-    </div>
-  </div>
+<div class="match-header" style="margin-top:15px;">
+  <span class="upcoming-badge">SUN 1 NOV • 16:30</span>
+  <div class="teams">Arsenal <span class="vs">VS</span> Liverpool</div>
+  <div class="match-info">Premier League — Emirates Stadium</div>
+</div>
+<div class="stream-row">
+  <span class="stream-name">Sky Sports</span>
+  <a href="https://www.skysports.com/watch" target="_blank" class="watch-btn">▶ WATCH</a>
+</div>
+<div class="stream-row">
+  <span class="stream-name">BBC Sport</span>
+  <a href="https://www.bbc.co.uk/sport/football" target="_blank" class="watch-btn">▶ WATCH</a>
 </div>
 
-<script>
-const ACCESS_CODE = 'Hsports25';
+<div class="divider"></div>
 
-function showAccess() {
-  document.getElementById('access-screen').style.display = 'flex';
-}
-function hideAccess() {
-  document.getElementById('access-screen').style.display = 'none';
-  document.getElementById('wrong-msg').style.display = 'none';
-  document.getElementById('pass-input').value = '';
-}
-function checkAccess() {
-  const input = document.getElementById('pass-input').value.trim();
-  if (input === ACCESS_CODE) {
-    document.getElementById('access-screen').style.display = 'none';
-    document.getElementById('home-screen').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-  } else {
-    document.getElementById('wrong-msg').style.display = 'block';
-  }
-}
-function logout() {
-  document.getElementById('main-content').style.display = 'none';
-  document.getElementById('home-screen').style.display = 'block';
-  document.getElementById('pass-input').value = '';
-  document.getElementById('wrong-msg').style.display = 'none';
-}
-document.getElementById('pass-input').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') checkAccess();
-});
+<div class="section-title">🥊 BOXING — THIS WEEK</div>
 
-function updateUKTime() {
-  const now = new Date();
-  const ukOptions = { 
-    timeZone: 'Europe/London', 
-    day: 'numeric', 
-    month: 'long', 
-    year: 'numeric',
-    hour: '2-digit', 
-    minute: '2-digit',
-    hour12: false
-  };
-  const ukTime = now.toLocaleString('en-GB', ukOptions);
-  const el = document.getElementById('uk-datetime');
-  if (el) el.textContent = ukTime + ' UK Time';
-}
-updateUKTime();
-setInterval(updateUKTime, 60000);
-</script>
-
-</body>
-</html>
+<div class="match-header">
+  <span class="upcoming-badge">SAT 31 OCT • 02:00 UK</span>
+  <div class="teams">Canelo <span class="vs">VS</span> M'billi</div>
+  <div class="match-info">WBC Super-Middleweight Title • Las Vegas</div>
+</div>
+<div class="stream-row">
+  <span class="stream-name">DAZN PPV</span>
+  <a href="https://www.dazn.com" target="_blank" class="watch-btn">▶ WATCH</a>
+</div>
 
 
 
