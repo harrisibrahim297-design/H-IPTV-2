@@ -227,11 +227,20 @@
 </div>
 
 <script>
-const ACCESS_CODE = 'Hsports25';
+const VALID_CODES = [
+  'Hsports25',
+  'HSPORTS-001',
+  'HSPORTS-002',
+  'HSPORTS-003',
+  'HSPORTS-004',
+  'HSPORTS-005'
+];
+
 
 function showAccess() {
   document.getElementById('access-screen').style.display = 'flex';
-}
+}if (VALID_CODES.includes(input)) {
+
 function hideAccess() {
   document.getElementById('access-screen').style.display = 'none';
   document.getElementById('wrong-msg').style.display = 'none';
